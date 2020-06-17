@@ -55,4 +55,4 @@ MQTT_PASSWORD = os.environ.get('MQTT_PASSWORD', '')
 RTLAMR = '/root/go/bin/rtlamr'
 
 # path to rtl_tcp
-RTL_TCP = '/usr/bin/rtl_tcp'
+RTL_TCP = os.environ.get('RTL_TCP', '/usr/bin/rtl_tcp')
