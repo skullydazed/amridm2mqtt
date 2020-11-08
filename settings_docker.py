@@ -56,3 +56,4 @@ RTLAMR = '/root/go/bin/rtlamr'
 
 # path to rtl_tcp
 RTL_TCP = os.environ.get('RTL_TCP', '/usr/bin/rtl_tcp')
+RTL_TCP_DEVICE = os.environ.get('RTL_TCP_DEVICE', '0')

@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 '''
 Runs rtlamr to watch for IDM broadcasts from power meter. If meter id
-is in the list, usage is sent to 'readings/{meter id}/meter_reading'
+is in the list, usage is sent to 'powermeter/{meter id}/reading'
 topic on the MQTT broker specified in settings.
 
 WATCHED_METERS = A Python list indicating those meter IDs to record and post.
 MQTT_HOST = String containing the MQTT server address.
 MQTT_PORT = An int containing the port the MQTT server is active on.
+RTL_TCP_DEVICE = An int indicating which RTL devcie to use (default: 0)
 
 '''
 import os
@@ -57,7 +58,7 @@ def send_mqtt(topic, payload,):
         print("MQTT Publish Failed: " + str(ex))
 
 # start the rtl_tcp program
-rtltcp = subprocess.Popen([settings.RTL_TCP + " > /dev/null 2>&1 &"], shell=True,
+rtltcp = subprocess.Popen([settings.RTL_TCP + " -d " + settings.RTL_TCP_DEVICE + " > /dev/null 2>&1 &"], shell=True,
     stdin=None, stdout=None, stderr=None, close_fds=True)
 time.sleep(5)
 
@@ -100,10 +101,10 @@ while True:
             current_reading_in_kwh = (read_cur * settings.WH_MULTIPLIER) / 1000
 
             debug_print('Sending meter {} reading: {}'.format(meter_id, current_reading_in_kwh))
-            send_mqtt('readings/{}/meter_reading'.format(meter_id), str(current_reading_in_kwh))
+            send_mqtt('powermeter/{}/reading'.format(meter_id), str(current_reading_in_kwh))
 
             debug_print('Sending meter {} rate: {}'.format(meter_id, rate))
-            send_mqtt('readings/{}/meter_rate'.format(meter_id), str(rate))
+            send_mqtt('powermeter/{}/rate'.format(meter_id), str(rate))
 
             # store interval ID to avoid duplicating data
             set_last_interval(meter_id, interval_cur)

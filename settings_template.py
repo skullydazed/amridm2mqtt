@@ -40,3 +40,4 @@ RTLAMR = '/usr/local/bin/rtlamr'
 
 # path to rtl_tcp
 RTL_TCP = '/usr/bin/rtl_tcp'
+RTL_TCP_DEVICE = '0'
